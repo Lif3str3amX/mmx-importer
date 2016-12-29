@@ -1,8 +1,2 @@
 app/etc/modules/Mmx_Importer.xml
-app/code/local/Mmx/Importer/Helper/Data.php
-app/code/local/Mmx/Importer/Helper/SerialImporter.php
-app/code/local/Mmx/Importer/Helper/StockImporter.php
-app/code/local/Mmx/Importer/controllers/ImportController.php
-app/code/local/Mmx/Importer/etc/adminhtml.xml
-app/code/local/Mmx/Importer/etc/config.xml
-app/code/local/Mmx/Importer/etc/system.xml
+app/code/local/Mmx/Importer/* app/code/local/Mmx/Importer/
