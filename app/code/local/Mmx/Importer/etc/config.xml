@@ -1,0 +1,35 @@
+<config>    
+    <modules>
+        <Mmx_Importer>
+            <version>0.1.0</version>
+        </Mmx_Importer>
+    </modules>
+    <global>
+        <blocks>
+            <mmx_importer>
+                <class>Mmx_Importer_Block</class>
+            </mmx_importer>
+        </blocks>
+        <models>
+            <mmx_importer>
+                <class>Mmx_Importer_Model</class>
+            </mmx_importer>
+        </models>
+        <helpers>
+            <mmx_importer>
+                <class>Mmx_Importer_Helper</class>
+            </mmx_importer>
+        </helpers>
+    </global>
+    <frontend>
+        <routers>
+            <importer>
+                <use>standard</use>
+                <args>
+                    <module>Mmx_Importer</module>
+                    <frontName>importer</frontName>
+                </args>
+            </importer>
+        </routers>
+    </frontend>
+</config>

@@ -1,0 +1,8 @@
+<config>
+    <modules>
+        <Mmx_Importer>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Mmx_Importer>
+    </modules>
+</config>

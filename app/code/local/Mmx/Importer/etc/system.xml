@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <mmx translate="label">
+            <label>MMX</label>
+            <sort_order>999</sort_order>
+        </mmx>
+    </tabs>
+    <sections>
+        <mmx_importer translate="label" module="mmx_importer">
+            <label>MMX XML Importer</label>
+            <tab>mmx</tab>
+            <sort_order>1</sort_order>
+            <show_in_default>1</show_in_default>
+            <groups>
+                <bt translate="label">
+                    <label>BT Settings</label>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <fields>
+                        <stock_xml_filename translate="label comment">
+                            <label>Stock XML File</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[Location of BT Stock XML file]]></comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </stock_xml_filename>
+                        <category_id translate="label comment">
+                            <label>Import products to Category ID</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[Products will be imported into this category]]></comment>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </category_id>
+                    </fields>
+                </bt>
+                
+                <indigo translate="label">
+                    <label>Indigo Settings</label>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <fields>
+                        <stock_xml_filename translate="label comment">
+                            <label>Stock XML File</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[Location of Indigo Stock XML file]]></comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </stock_xml_filename>
+
+                        <serial_xml_filename translate="label comment">
+                            <label>Serial XML File</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[Optional location of Indigo XML file containing serial numbers]]></comment>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </serial_xml_filename>
+                        
+                        <category_id translate="label comment">
+                            <label>Import products to Category ID</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[Products will be imported into this category]]></comment>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </category_id>
+                    </fields>
+                </indigo>
+                
+                <general translate="label">
+                    <label>General Settings</label>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <fields>
+                        <processed_dir translate="label comment">
+                            <label>Move processed files to folder</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[Processed XML files will be moved to this folder]]></comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </processed_dir>
+                    </fields>
+                </general>                         
+            </groups>
+        </mmx_importer>
+    </sections>
+</config>
