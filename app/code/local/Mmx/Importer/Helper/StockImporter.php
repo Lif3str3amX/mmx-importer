@@ -192,7 +192,7 @@ class Mmx_Importer_Helper_StockImporter {
         try {
             $product->save();
         } catch (Exception $ex) {
-            Mage::logException($ex, Zend_Log::ERR, 'mmx_sage.log', true);
+            Mage::logException($ex, Zend_Log::ERR, 'mmx_importer.log', true);
         }    
 
         return $product;
@@ -203,7 +203,7 @@ class Mmx_Importer_Helper_StockImporter {
      * @param string $message
      */
     public function log($message) {
-        Mage::log($message, Zend_Log::INFO, 'mmx_sage.log', true);
+        Mage::log($message, Zend_Log::INFO, 'mmx_importer.log', true);
     }
     
 }
