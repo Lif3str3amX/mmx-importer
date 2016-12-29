@@ -76,12 +76,21 @@
                     <sort_order>3</sort_order>
                     <show_in_default>1</show_in_default>
                     <fields>
+                        <order_status_xml_filename translate="label comment">
+                            <label>Order Status XML File</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[Location of Order Status XML file]]></comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </order_status_xml_filename>
+
                         <processed_dir translate="label comment">
                             <label>Move processed files to folder</label>
                             <frontend_type>text</frontend_type>
                             <validate>required-entry</validate>
                             <comment><![CDATA[Processed XML files will be moved to this folder]]></comment>
-                            <sort_order>1</sort_order>
+                            <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
                         </processed_dir>
                     </fields>

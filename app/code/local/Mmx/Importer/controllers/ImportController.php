@@ -42,7 +42,6 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
             Mmx_Importer_Helper_Data::moveFile($bt_stock_xml_filename, $processed_dir);
         }
 
-
         // Indigo
         $indigo_stock_xml_filename = Mage::getStoreConfig('mmx_importer/indigo/stock_xml_filename');
         if (!$indigo_stock_xml_filename) {
@@ -71,6 +70,14 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
             Mmx_Importer_Helper_Data::moveFile($indigo_serial_xml_filename, $processed_dir);
         }
 
+        // Order Status
+        $order_status_xml_filename = Mage::getStoreConfig('mmx_importer/general/order_status_xml_filename');
+        if (is_file($order_status_xml_filename)) {
+            $this->log('Found Order Status file: ' . $order_status_xml_filename);
+            $this->processOrderStatus($order_status_xml_filename);
+            Mmx_Importer_Helper_Data::moveFile($order_status_xml_filename, $processed_dir);
+        }
+        
         $mtime = microtime();
         $mtime = explode(" ", $mtime);
         $endtime = $mtime[1] + $mtime[0];
@@ -99,6 +106,14 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
                 ->update();
     }
 
+    public function processOrderStatus($order_status_xml_filename) {
+
+        $helper = new Mmx_Importer_Helper_OrderStatusImporter();
+        $helper->setXmlFilename($order_status_xml_filename)
+                ->setXpath('/Report/table1/Detail_Collection/Detail')
+                ->update();
+    }
+    
     public function log($message) {
         Mage::log($message, Zend_Log::INFO, 'mmx_importer.log', true);
     }

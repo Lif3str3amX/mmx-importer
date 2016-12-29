@@ -9,6 +9,7 @@ class Mmx_Importer_Helper_Data extends Mage_Core_Helper_Abstract {
         // Some hacks to remove warnings
         $xml = str_replace('xmlns="Web_x0020_Portal_x0020_Current_x0020_Stock"', '', $xml);
         $xml = str_replace('xmlns="Web_x0020_Portal_x0020_Free_x0020_Stock_x0020_-_x0020_Serialised"', '', $xml);
+        $xml = str_replace('xmlns="Web_x0020_Portal_x0020_Indigo_x0020_Order_x0020_Status"', '', $xml);
 
         $sxe = new SimpleXMLElement($xml);
         $dom_sxe = dom_import_simplexml($sxe);
