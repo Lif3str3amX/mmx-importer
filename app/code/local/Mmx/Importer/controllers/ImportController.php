@@ -4,6 +4,7 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
 
     const BT_WEBSITE_ID = 2;
     const INDIGO_WEBSITE_ID = 3;
+    const NOKIA_WEBSITE_ID = 4;
 
     public function indexAction() {
 
@@ -42,6 +43,23 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
             Mmx_Importer_Helper_Data::moveFile($bt_stock_xml_filename, $processed_dir);
         }
 
+        // Nokia
+        $nokia_stock_xml_filename = Mage::getStoreConfig('mmx_importer/nokia/stock_xml_filename');
+        if (!$nokia_stock_xml_filename) {
+            throw new Exception('Stock XML file location has not been configured for Nokia');
+        }
+
+        $nokia_category_id = Mage::getStoreConfig('mmx_importer/nokia/category_id');
+        if (!$nokia_category_id) {
+            throw new Exception('Destination Category ID has not been configured for Nokia');
+        }
+
+        if (is_file($nokia_stock_xml_filename)) {
+            $this->log('Found BT stock file: ' . $nokia_stock_xml_filename);
+            $this->processStock($nokia_stock_xml_filename, self::NOKIA_WEBSITE_ID, $nokia_category_id);
+            Mmx_Importer_Helper_Data::moveFile($nokia_stock_xml_filename, $processed_dir);
+        }        
+        
         // Indigo
         $indigo_stock_xml_filename = Mage::getStoreConfig('mmx_importer/indigo/stock_xml_filename');
         if (!$indigo_stock_xml_filename) {

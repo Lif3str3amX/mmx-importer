@@ -36,7 +36,31 @@
                         </category_id>
                     </fields>
                 </bt>
-                
+
+                <nokia translate="label">
+                    <label>Nokia Settings</label>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <fields>
+                        <stock_xml_filename translate="label comment">
+                            <label>Stock XML File</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[Location of Nokia Stock XML file]]></comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </stock_xml_filename>
+                        <category_id translate="label comment">
+                            <label>Import products to Category ID</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[Products will be imported into this category]]></comment>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </category_id>
+                    </fields>
+                </nokia>                
+                                                
                 <indigo translate="label">
                     <label>Indigo Settings</label>
                     <sort_order>2</sort_order>
