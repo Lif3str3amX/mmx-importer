@@ -54,8 +54,8 @@ class Mmx_Importer_Helper_OrderStatusImporter {
                     $this->log("Order {$increment_id} not found");
                 }
                 else {
-                    // Only change if different
-                    if ($order->getStatus() != $status) {
+                    // Only change if different and not already canceled
+                    if ($order->getStatus() != $status && $order->getStatus() != 'canceled') {
                         
                         $this->log(sprintf("Updating status for %s, %s to %s", $order->getIncrementId(), $order->getStatus(), $status));
 
