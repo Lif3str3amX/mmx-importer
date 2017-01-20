@@ -118,12 +118,12 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
 
     public function processStock($stock_xml_filename, $website_id, $category_id) {
 
-        $xmlHelper = new Mmx_Importer_Helper_Xml();
-        $xmlHelper->setXmlFilename($stock_xml_filename)
+        $helper = new Mmx_Importer_Helper_Xml();
+        $helper->setXmlFilename($stock_xml_filename)
                 ->setXpath('/Report/table1/Detail_Collection/Detail');
         
-        $helper = new Mmx_Importer_Model_StockImporter();
-        $helper->setHelper($xmlHelper)
+        $model = new Mmx_Importer_Model_StockImporter();
+        $model->setHelper($helper)
                 ->setWebsiteId($website_id)
                 ->setCategoryId($category_id)
                 ->update();
@@ -131,23 +131,23 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
 
     public function processSerials($serial_xml_filename) {
 
-        $xmlHelper = new Mmx_Importer_Helper_XmlSerial();
-        $xmlHelper->setXmlFilename($serial_xml_filename)
+        $helper = new Mmx_Importer_Helper_XmlSerial();
+        $helper->setXmlFilename($serial_xml_filename)
                 ->setXpath('/Report/table1/Detail_Collection/Detail');
 
-        $helper = new Mmx_Importer_Model_SerialImporter();
-        $helper->setHelper($xmlHelper)
+        $model = new Mmx_Importer_Model_SerialImporter();
+        $model->setHelper($helper)
                 ->update();
     }
 
     public function processOrderStatus($order_status_xml_filename) {
 
-        $xmlHelper = new Mmx_Importer_Helper_Xml();
-        $xmlHelper->setXmlFilename($order_status_xml_filename)
+        $helper = new Mmx_Importer_Helper_Xml();
+        $helper->setXmlFilename($order_status_xml_filename)
                 ->setXpath('/Report/table1/Detail_Collection/Detail');
         
-        $helper = new Mmx_Importer_Model_OrderStatusImporter();
-        $helper->setHelper($xmlHelper)
+        $model = new Mmx_Importer_Model_OrderStatusImporter();
+        $model->setHelper($helper)
                 ->update();
     }
     
