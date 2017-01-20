@@ -8,7 +8,7 @@
     </tabs>
     <sections>
         <mmx_importer translate="label" module="mmx_importer">
-            <label>MMX XML Importer</label>
+            <label>XML Importer</label>
             <tab>mmx</tab>
             <sort_order>1</sort_order>
             <show_in_default>1</show_in_default>
