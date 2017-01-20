@@ -49,6 +49,11 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
             throw new Exception('Stock XML file location has not been configured for Nokia');
         }
 
+        $nokia_serial_xml_filename = Mage::getStoreConfig('mmx_importer/nokia/serial_xml_filename');
+        if (!$nokia_serial_xml_filename) {
+            throw new Exception('Serial XML file location has not been configured for Nokia');
+        }
+        
         $nokia_category_id = Mage::getStoreConfig('mmx_importer/nokia/category_id');
         if (!$nokia_category_id) {
             throw new Exception('Destination Category ID has not been configured for Nokia');
@@ -59,6 +64,12 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
             $this->processStock($nokia_stock_xml_filename, self::NOKIA_WEBSITE_ID, $nokia_category_id);
             Mmx_Importer_Helper_Data::moveFile($nokia_stock_xml_filename, $processed_dir);
         }        
+
+        if (is_file($nokia_serial_xml_filename)) {
+            $this->log('Found Nokia serial file: ' . $nokia_serial_xml_filename);
+            $this->processSerials($nokia_serial_xml_filename);
+            Mmx_Importer_Helper_Data::moveFile($nokia_serial_xml_filename, $processed_dir);
+        }
         
         // Indigo
         $indigo_stock_xml_filename = Mage::getStoreConfig('mmx_importer/indigo/stock_xml_filename');

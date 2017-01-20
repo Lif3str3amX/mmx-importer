@@ -50,12 +50,22 @@
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
                         </stock_xml_filename>
+                        
+                        <serial_xml_filename translate="label comment">
+                            <label>Serial XML File</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
+                            <comment><![CDATA[Optional location of Nokia XML file containing serial numbers]]></comment>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </serial_xml_filename>
+                        
                         <category_id translate="label comment">
                             <label>Import products to Category ID</label>
                             <frontend_type>text</frontend_type>
                             <validate>required-entry</validate>
                             <comment><![CDATA[Products will be imported into this category]]></comment>
-                            <sort_order>2</sort_order>
+                            <sort_order>3</sort_order>
                             <show_in_default>1</show_in_default>
                         </category_id>
                     </fields>
