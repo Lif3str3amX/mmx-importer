@@ -55,7 +55,7 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
         }
 
         if (is_file($nokia_stock_xml_filename)) {
-            $this->log('Found BT stock file: ' . $nokia_stock_xml_filename);
+            $this->log('Found Nokia stock file: ' . $nokia_stock_xml_filename);
             $this->processStock($nokia_stock_xml_filename, self::NOKIA_WEBSITE_ID, $nokia_category_id);
             Mmx_Importer_Helper_Data::moveFile($nokia_stock_xml_filename, $processed_dir);
         }        
