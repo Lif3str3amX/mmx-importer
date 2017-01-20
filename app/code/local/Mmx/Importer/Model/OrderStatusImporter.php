@@ -1,48 +1,37 @@
 <?php
 
-class Mmx_Importer_Helper_OrderStatusImporter {
+class Mmx_Importer_Model_OrderStatusImporter {
 
-    protected $xml_filename;
-    protected $xpath;
-
-    public function getXmlFilename() {
-        return $this->xml_filename;
+    /**
+     *
+     * @var Mmx_Importer_Helper_Xml
+     */
+    protected $helper;
+    
+    /**
+     * 
+     * @return Mmx_Importer_Helper_Xml
+     */
+    public function getHelper() {
+        return $this->helper;
     }
 
-    public function setXmlFilename($xml_filename) {
-        $this->xml_filename = $xml_filename;
+    /**
+     * 
+     * @param Mmx_Importer_Helper_Xml $helper
+     * @return $this
+     */
+    public function setHelper(Mmx_Importer_Helper_Xml $helper) {
+        $this->helper = $helper;
         return $this;
     }
     
-    public function getXpath() {
-        return $this->xpath;
-    }
-
-    public function setXpath($xpath) {
-        $this->xpath = $xpath;
-        return $this;
-    }
-    
-    public function getXml() {
-
-        // Load filename contents
-        $string = file_get_contents($this->xml_filename);
-
-        // Last minute namespace workaround - xmlns namespaces not seen in the original test files
-        $dom_xml = Mmx_Importer_Helper_Data::removeNameSpaces($string);
-
-        // Process
-        return simplexml_load_string($dom_xml);
-    }
-
     /**
      * 
      */
     public function update() {
 
-        $xml = $this->getXml();
-        $nodes = $xml->xpath($this->xpath);
-        if ($nodes) {
+        if ($nodes = $this->helper->getNodes()) {
             foreach ($nodes as $node) {
 
                 $increment_id = trim((string) $node->attributes()->order_no);

@@ -1,66 +1,82 @@
 <?php
 
-class Mmx_Importer_Helper_StockImporter {
+class Mmx_Importer_Model_StockImporter {
 
-    protected $xml_filename;
-    protected $xpath;
-    
+    /**
+     *
+     * @var Mmx_Importer_Helper_Xml
+     */
+    protected $helper;
+
+    /**
+     *
+     * @var int
+     */
     protected $website_id;
+    
+    /**
+     *
+     * @var int
+     */
     protected $category_id;
 
-    public function getXmlFilename() {
-        return $this->xml_filename;
+    /**
+     * 
+     * @return Mmx_Importer_Helper_Xml
+     */
+    public function getHelper() {
+        return $this->helper;
     }
 
-    public function setXmlFilename($xml_filename) {
-        $this->xml_filename = $xml_filename;
+    /**
+     * 
+     * @param Mmx_Importer_Helper_Xml $helper
+     * @return $this
+     */
+    public function setHelper(Mmx_Importer_Helper_Xml $helper) {
+        $this->helper = $helper;
         return $this;
-    }
+    }    
     
-    public function getXpath() {
-        return $this->xpath;
-    }
-
-    public function setXpath($xpath) {
-        $this->xpath = $xpath;
-        return $this;
-    }
-
+    /**
+     * 
+     * @return int
+     */
     public function getWebsiteId() {
         return $this->website_id;
     }
 
+    /**
+     * 
+     * @param int $website_id
+     * @return $this
+     */
     public function setWebsiteId($website_id) {
         $this->website_id = $website_id;
         return $this;
     }
 
+    /**
+     * 
+     * @return int
+     */
     public function getCategoryId() {
         return $this->category_id;
     }
 
+    /**
+     * 
+     * @param int $category_id
+     * @return $this
+     */
     public function setCategoryId($category_id) {
         $this->category_id = $category_id;
         return $this;
     }
 
-    public function getXml() {
-
-        // Load filename contents
-        $string = file_get_contents($this->xml_filename);
-
-        // Last minute namespace workaround - xmlns namespaces not seen in the original test files
-        $dom_xml = Mmx_Importer_Helper_Data::removeNameSpaces($string);
-
-        // Process
-        return simplexml_load_string($dom_xml);
-    }
-    
     public function update() {
         
-        $xml = $this->getXml();
-        $nodes = $xml->xpath($this->xpath);
-        if ($nodes) {
+        if ($nodes = $this->helper->getNodes()) {
             foreach ($nodes as $node) {
 
                 $sku = trim((string) $node->attributes()->product);
@@ -91,7 +107,7 @@ class Mmx_Importer_Helper_StockImporter {
 
             }
 
-            $this->log('Finished processing ' . $this->xml_filename);
+            $this->log('Finished processing ' . $this->helper->getXmlFilename());
         }
          
     }

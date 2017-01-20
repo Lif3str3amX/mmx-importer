@@ -1,72 +1,29 @@
 <?php
 
-class Mmx_Importer_Helper_SerialImporter {
+class Mmx_Importer_Model_SerialImporter {
 
-    protected $xml_filename;
-    protected $xpath;
-    protected $skus;
-
-    public function getXmlFilename() {
-        return $this->xml_filename;
-    }
-
-    public function setXmlFilename($xml_filename) {
-        $this->xml_filename = $xml_filename;
-        return $this;
-    }
+    /**
+     *
+     * @var Mmx_Importer_Helper_SerialXml
+     */
+    protected $helper;
     
-    public function getXpath() {
-        return $this->xpath;
-    }
-
-    public function setXpath($xpath) {
-        $this->xpath = $xpath;
-        return $this;
-    }
-
-    public function getSkus() {
-        return $this->skus;
-    }
-
-    public function setSkus($skus) {
-        $this->skus = $skus;
-        return $this;
-    }
-    
-    public function getXml() {
-
-        // Load filename contents
-        $string = file_get_contents($this->xml_filename);
-
-        // Last minute namespace workaround - xmlns namespaces not seen in the original test files
-        $dom_xml = Mmx_Importer_Helper_Data::removeNameSpaces($string);
-
-        // Process
-        return simplexml_load_string($dom_xml);
+    /**
+     * 
+     * @return Mmx_Importer_Helper_SerialXml
+     */
+    public function getHelper() {
+        return $this->helper;
     }
 
     /**
      * 
-     * @param string $sku
-     * @return array
+     * @param Mmx_Importer_Helper_SerialXml $helper
+     * @return $this
      */
-    public function getSerialsBySku($sku) {
-
-        $serials = array();
-        
-        $xml = $this->getXml();
-        $nodes = $xml->xpath($this->xpath);
-        if ($nodes) {
-            foreach ($nodes as $node) {
-                
-                $textbox6 = trim((string) $node->attributes()->textbox6);
-                if ($textbox6 == $sku) {
-                    $serials[] = trim((string) $node->attributes()->textbox17);
-                }
-            }
-        }
-
-        return $serials;
+    public function setHelper(Mmx_Importer_Helper_SerialXml $helper) {
+        $this->helper = $helper;
+        return $this;
     }
 
     /**
@@ -74,7 +31,7 @@ class Mmx_Importer_Helper_SerialImporter {
      */
     public function update() {
         
-        foreach ($this->skus as $sku) {
+        foreach ($this->helper->getSkus() as $sku) {
             
             /* @var $product Mage_Catalog_Model_Product */
             $product = Mage::getModel('catalog/product')->loadByAttribute('sku', $sku);
@@ -88,7 +45,7 @@ class Mmx_Importer_Helper_SerialImporter {
                 // http://blog.adin.pro/2015-06-05/magento-product-options-create-and-delete/
                 $product->load($product->getId());
                 
-                $serials = $this->getSerialsBySku($sku);
+                $serials = $this->helper->getSerialsBySku($sku);
                 if ($serials) {
                     
                     $options = $product->getOptions();

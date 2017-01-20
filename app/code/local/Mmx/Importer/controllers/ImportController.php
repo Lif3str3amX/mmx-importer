@@ -107,9 +107,12 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
 
     public function processStock($stock_xml_filename, $website_id, $category_id) {
 
-        $helper = new Mmx_Importer_Helper_StockImporter();
-        $helper->setXmlFilename($stock_xml_filename)
-                ->setXpath('/Report/table1/Detail_Collection/Detail')
+        $xmlHelper = new Mmx_Importer_Helper_Xml();
+        $xmlHelper->setXmlFilename($stock_xml_filename)
+                ->setXpath('/Report/table1/Detail_Collection/Detail');
+        
+        $helper = new Mmx_Importer_Model_StockImporter();
+        $helper->setHelper($xmlHelper)
                 ->setWebsiteId($website_id)
                 ->setCategoryId($category_id)
                 ->update();
@@ -117,18 +120,23 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
 
     public function processSerials($serial_xml_filename) {
 
-        $helper = new Mmx_Importer_Helper_SerialImporter();
-        $helper->setXmlFilename($serial_xml_filename)
-                ->setXpath('/Report/table1/Detail_Collection/Detail')
-                ->setSkus(array('INCIENABOM', 'INBTRESERVATION'))
+        $xmlHelper = new Mmx_Importer_Helper_XmlSerial();
+        $xmlHelper->setXmlFilename($serial_xml_filename)
+                ->setXpath('/Report/table1/Detail_Collection/Detail');
+
+        $helper = new Mmx_Importer_Model_SerialImporter();
+        $helper->setHelper($xmlHelper)
                 ->update();
     }
 
     public function processOrderStatus($order_status_xml_filename) {
 
-        $helper = new Mmx_Importer_Helper_OrderStatusImporter();
-        $helper->setXmlFilename($order_status_xml_filename)
-                ->setXpath('/Report/table1/Detail_Collection/Detail')
+        $xmlHelper = new Mmx_Importer_Helper_Xml();
+        $xmlHelper->setXmlFilename($order_status_xml_filename)
+                ->setXpath('/Report/table1/Detail_Collection/Detail');
+        
+        $helper = new Mmx_Importer_Model_OrderStatusImporter();
+        $helper->setHelper($xmlHelper)
                 ->update();
     }
     
