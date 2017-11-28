@@ -18,6 +18,11 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
             throw new Exception('This importer is only designed for use in the main website/store');
         }
 
+        $lastOrder = $this->getLastOrder();
+        if (!$lastOrder) {
+            throw new Exception('Could not get last order');
+        }
+
         // Workaround for save problem?
         Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
 
@@ -38,9 +43,14 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
         }
 
         if (is_file($bt_stock_xml_filename)) {
-            $this->log('Found BT stock file: ' . $bt_stock_xml_filename);
-            $this->processStock($bt_stock_xml_filename, self::BT_WEBSITE_ID, $bt_category_id);
-            Mmx_Importer_Helper_Data::moveFile($bt_stock_xml_filename, $processed_dir);
+            if ($this->fileIsNewerThanLastOrder($bt_stock_xml_filename, $lastOrder)) {
+                $this->log('Found BT stock file: ' . $bt_stock_xml_filename);
+                $this->processStock($bt_stock_xml_filename, self::BT_WEBSITE_ID, $bt_category_id);
+                Mmx_Importer_Helper_Data::moveFile($bt_stock_xml_filename, $processed_dir);
+            }
+            else {
+                $this->log('BT stock file is not 15 mins newer than last order - skipping');                
+            }
         }
 
         // Nokia
@@ -60,15 +70,25 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
         }
 
         if (is_file($nokia_stock_xml_filename)) {
-            $this->log('Found Nokia stock file: ' . $nokia_stock_xml_filename);
-            $this->processStock($nokia_stock_xml_filename, self::NOKIA_WEBSITE_ID, $nokia_category_id);
-            Mmx_Importer_Helper_Data::moveFile($nokia_stock_xml_filename, $processed_dir);
+            if ($this->fileIsNewerThanLastOrder($nokia_stock_xml_filename, $lastOrder)) {
+                $this->log('Found Nokia stock file: ' . $nokia_stock_xml_filename);
+                $this->processStock($nokia_stock_xml_filename, self::NOKIA_WEBSITE_ID, $nokia_category_id);
+                Mmx_Importer_Helper_Data::moveFile($nokia_stock_xml_filename, $processed_dir);
+            }
+            else {
+                $this->log('Nokia stock file is not 15 mins newer than last order - skipping');
+            }
         }        
 
         if (is_file($nokia_serial_xml_filename)) {
-            $this->log('Found Nokia serial file: ' . $nokia_serial_xml_filename);
-            $this->processSerials($nokia_serial_xml_filename);
-            Mmx_Importer_Helper_Data::moveFile($nokia_serial_xml_filename, $processed_dir);
+            if ($this->fileIsNewerThanLastOrder($nokia_serial_xml_filename, $lastOrder)) {
+                $this->log('Found Nokia serial file: ' . $nokia_serial_xml_filename);
+                $this->processSerials($nokia_serial_xml_filename);
+                Mmx_Importer_Helper_Data::moveFile($nokia_serial_xml_filename, $processed_dir);
+            }
+            else {
+                $this->log('Nokia serial file is not 15 mins newer than last order - skipping');
+            }
         }
         
         // Indigo
@@ -88,15 +108,25 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
         }
 
         if (is_file($indigo_stock_xml_filename)) {
-            $this->log('Found Indigo stock file: ' . $indigo_stock_xml_filename);
-            $this->processStock($indigo_stock_xml_filename, self::INDIGO_WEBSITE_ID, $indigo_category_id);
-            Mmx_Importer_Helper_Data::moveFile($indigo_stock_xml_filename, $processed_dir);
+            if ($this->fileIsNewerThanLastOrder($indigo_stock_xml_filename, $lastOrder)) {
+                $this->log('Found Indigo stock file: ' . $indigo_stock_xml_filename);
+                $this->processStock($indigo_stock_xml_filename, self::INDIGO_WEBSITE_ID, $indigo_category_id);
+                Mmx_Importer_Helper_Data::moveFile($indigo_stock_xml_filename, $processed_dir);
+            }
+            else {
+                $this->log('Indigo stock file is not 15 mins newer than last order - skipping');
+            }
         }
 
         if (is_file($indigo_serial_xml_filename)) {
-            $this->log('Found Indigo serial file: ' . $indigo_serial_xml_filename);
-            $this->processSerials($indigo_serial_xml_filename);
-            Mmx_Importer_Helper_Data::moveFile($indigo_serial_xml_filename, $processed_dir);
+            if ($this->fileIsNewerThanLastOrder($indigo_serial_xml_filename, $lastOrder)) {            
+                $this->log('Found Indigo serial file: ' . $indigo_serial_xml_filename);
+                $this->processSerials($indigo_serial_xml_filename);
+                Mmx_Importer_Helper_Data::moveFile($indigo_serial_xml_filename, $processed_dir);
+            }
+            else {
+                $this->log('Indigo serial file is not 15 mins newer than last order - skipping');
+            }
         }
 
         // Order Status
@@ -153,6 +183,41 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
     
     public function log($message) {
         Mage::log($message, Zend_Log::INFO, 'mmx_importer.log', true);
+    }
+    
+    /**
+     * 
+     * @return Mage_Sales_Model_Order
+     */
+    public function getLastOrder() {
+        $orders = Mage::getModel('sales/order')->getCollection()
+             ->setOrder('created_at','DESC')
+             ->setPageSize(1)
+             ->setCurPage(1);
+
+        $order = $orders->getFirstItem();
+        
+        return $order;
+    }
+    
+    /**
+     * Checks if file time (+15 minutes) is greater than last order date
+     * 
+     * @param string $file
+     * @param Mage_Sales_Model_Order $order
+     */
+    public function fileIsNewerThanLastOrder($file, $order) {
+        
+        $tolerance = 60 * 15;   // +15 mins req by JP
+        $modificationTime = filemtime($file);
+        $orderTime = strtotime($order->getCreatedAt());
+
+        if (($modificationTime + $tolerance) > $orderTime) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }
