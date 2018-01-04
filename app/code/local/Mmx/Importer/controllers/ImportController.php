@@ -5,6 +5,7 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
     const BT_WEBSITE_ID = 2;
     const INDIGO_WEBSITE_ID = 3;
     const NOKIA_WEBSITE_ID = 4;
+    const HUAWEI_WEBSITE_ID = 5;
 
     public function indexAction() {
 
@@ -49,7 +50,29 @@ class Mmx_Importer_ImportController extends Mage_Core_Controller_Front_Action {
                 Mmx_Importer_Helper_Data::moveFile($bt_stock_xml_filename, $processed_dir);
             }
             else {
-                $this->log('BT stock file is not 15 mins newer than last order - skipping');                
+                $this->log('BT stock file is not 15 mins newer than last order - skipping');
+            }
+        }
+
+        // Huawei
+        $huawei_stock_xml_filename = Mage::getStoreConfig('mmx_importer/huawei/stock_xml_filename');
+        if (!$huawei_stock_xml_filename) {
+            throw new Exception('Stock XML file location has not been configured for Huawei');
+        }
+
+        $huawei_category_id = Mage::getStoreConfig('mmx_importer/huawei/category_id');
+        if (!$huawei_category_id) {
+            throw new Exception('Destination Category ID has not been configured for Huawei');
+        }
+
+        if (is_file($huawei_stock_xml_filename)) {
+            if ($this->fileIsNewerThanLastOrder($huawei_stock_xml_filename, $lastOrder)) {
+                $this->log('Found Huawei stock file: ' . $huawei_stock_xml_filename);
+                $this->processStock($huawei_stock_xml_filename, self::HUAWEI_WEBSITE_ID, $huawei_category_id);
+                Mmx_Importer_Helper_Data::moveFile($huawei_stock_xml_filename, $processed_dir);
+            }
+            else {
+                $this->log('Huawei stock file is not 15 mins newer than last order - skipping');
             }
         }
 
